@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EssayMaster - Makale Puanlama Sistemi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* İçeriği ortalama */
+            min-height: 100vh;
+            background-image: url("{% static 'app/img/s.webp' %}");
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            padding: 20px; /* Navbar boyutunu artırma */
+            width: 100%; /* Tüm genişliği kapsama */
+            position: relative;
+            z-index: 2;
+        }
+        .navbar-brand {
+            color: #ffb5a7 !important; /* Light Coral */
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #ffb5a7 !important; /* Light Coral */
+        }
+        .navbar-nav .nav-link.active {
+            color: #ffe5d9 !important; /* Light Peach */
+        }
+        #content {
+            flex: 1;
+            max-width: 800px; /* İçeriği daraltma */
+            width: 100%; /* Mobil uyumlu olması için */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.85); /* White with opacity */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        #content p {
+            color: #444242; /* Beyaz yazı rengi */
+        }
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .btn-primary {
+            background-color: #f67280; /* Coral */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn-primary:hover {
+            background-color: #c06c84; /* Darker Coral */
+        }
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            color: #ffb5a7;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9); /* White with opacity */
+            border: 1px solid #61666b; /* Light Gray */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            backdrop-filter: blur(5px); /* Adds blur effect to the content */
+        }
+        .form-container label {
+            font-weight: bold;
+        }
+        .form-container textarea {
+            resize: vertical;
+            border: 1px solid #e0e6ef; /* Light Blue Gray */
+            background-color: #e3f2fd; /* Very Light Blue */
+        }
+        .form-container textarea:focus {
+            border-color: #8cb3fb; /* Soft Blue */
+            background-color: #ffffff;
+        }
+        .header {
+            background-color: #f8b595; /* Peach */
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'app/img/2-removebg-preview.png' %}" alt="EssayMaster Logo" style="height: 100px; width: auto;">
+            EssayMaster
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Anasayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Makale Puanlama</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Analizler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Raporlar</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+        <main role="main" class="container">
+            <div class="header">
+                <h2>Makale Puanlama Sistemi</h2>
+            </div>
+            <section>
+                <p>
+                    Makale Puanlama Sistemi ile yazılarınızı hızlı ve etkili bir şekilde değerlendirin.
+                    Sistemi kullanarak makalelerinizi puanlamak ve analiz etmek için aşağıdaki kutuya makalenizi girin.
+                </p>
+                
+                <!-- Article Text Form -->
+                <div class="form-container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="essayText">Makale Metni</label>
+                            {{ form.text }} <!-- Form elemanını bu şekilde göster -->
+                        </div>
+                        <button type="submit" class="btn btn-primary">Puanla</button>
+                    </form>
+                </div>
+
+                <!-- Analiz Sonuçları -->
+                {% if result %}
+                <div class="mt-4">
+                    <h4>Analiz Sonuçları:</h4>
+                    <ul>
+                    {% for ozellik, deger in result.items %}
+                        <li><strong>{{ ozellik }}:</strong> {{ deger }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <span>© 2024 EssayMaster. Tüm hakları saklıdır.</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
